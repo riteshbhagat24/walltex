@@ -1,0 +1,211 @@
+/* Walltex — Base styles, reset, typography */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 96px;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  background: var(--surface-page);
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img, picture, video, svg { display: block; max-width: 100%; }
+img { height: auto; }
+
+button, input, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+button { cursor: pointer; background: none; border: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* Typography scale */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+h1 { font-size: var(--text-hero); line-height: 0.95; letter-spacing: -0.03em; }
+h2 { font-size: var(--text-4xl); line-height: 1; letter-spacing: -0.025em; }
+h3 { font-size: var(--text-3xl); }
+h4 { font-size: var(--text-2xl); }
+h5 { font-size: var(--text-xl); }
+p { max-width: 60ch; }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-weight: 500;
+  color: var(--color-stone-700);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--color-gold);
+}
+.eyebrow--center::before { display: none; }
+.eyebrow--light { color: rgba(248, 248, 246, 0.72); }
+.eyebrow--light::before { background: var(--color-gold-soft); }
+
+.display-serif { font-family: var(--font-display); font-weight: 400; }
+.display-italic { font-family: var(--font-display); font-style: italic; font-weight: 400; }
+.muted { color: var(--color-stone-700); }
+.gold { color: var(--color-gold-deep); }
+
+.caps {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+/* Layout primitives */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+.container--narrow { max-width: var(--container-narrow); }
+.container--text { max-width: var(--container-text); }
+.container--full { max-width: none; padding: 0; }
+
+.section { padding-block: var(--space-section); position: relative; }
+.section--tight { padding-block: calc(var(--space-section) * 0.6); }
+.section--dark { background: var(--surface-invert); color: var(--color-bone); }
+.section--dark h1, .section--dark h2, .section--dark h3, .section--dark h4 { color: var(--color-bone); }
+.section--stone { background: var(--color-stone-50); }
+.section--bone { background: var(--color-bone-deep); }
+
+.stack > * + * { margin-top: var(--space-5); }
+.stack-lg > * + * { margin-top: var(--space-7); }
+
+.grid { display: grid; gap: var(--gutter); }
+
+.hide-mobile { display: none; }
+@media (min-width: 860px) {
+  .hide-mobile { display: initial; }
+  .hide-desktop { display: none; }
+}
+
+/* Links */
+.link-underline {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right;
+  transform: scaleX(1);
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.link-underline:hover::after { transform-origin: left; transform: scaleX(0); animation: reveal-line 420ms var(--ease-out-expo) forwards 200ms; }
+@keyframes reveal-line { to { transform: scaleX(1); } }
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Animated reveal utility (JS toggles .is-in) */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 900ms var(--ease-out-expo), transform 900ms var(--ease-out-expo);
+  will-change: transform, opacity;
+}
+.reveal.is-in { opacity: 1; transform: none; }
+.reveal.reveal--blur { filter: blur(10px); }
+.reveal.reveal--blur.is-in { filter: blur(0); }
+.reveal[data-delay="1"] { transition-delay: 120ms; }
+.reveal[data-delay="2"] { transition-delay: 240ms; }
+.reveal[data-delay="3"] { transition-delay: 360ms; }
+.reveal[data-delay="4"] { transition-delay: 480ms; }
+.reveal[data-delay="5"] { transition-delay: 600ms; }
+
+.split-reveal {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.split-reveal > span {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 1000ms var(--ease-out-expo);
+}
+.split-reveal.is-in > span { transform: translateY(0); }
+.split-reveal[data-delay="1"] > span { transition-delay: 120ms; }
+.split-reveal[data-delay="2"] > span { transition-delay: 240ms; }
+.split-reveal[data-delay="3"] > span { transition-delay: 360ms; }
+
+/* Scroll marquee */
+.marquee {
+  overflow: hidden;
+  padding-block: var(--space-5);
+  border-block: var(--border-hair);
+  white-space: nowrap;
+}
+.marquee__track {
+  display: inline-flex;
+  gap: var(--space-9);
+  animation: marquee 38s linear infinite;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 1rem + 3vw, 4rem);
+  font-style: italic;
+  color: var(--color-stone-500);
+}
+.marquee__track span { display: inline-flex; gap: var(--space-9); align-items: center; }
+.marquee__track span::after {
+  content: "✦";
+  color: var(--color-gold);
+  margin-left: var(--space-9);
+  font-style: normal;
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* Noise overlay */
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}

@@ -1,0 +1,21 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# Temp / backup
+*.bak
+*.tmp
+*.log
+
+# Node (if ever added)
+node_modules/
+dist/
+.next/
+
+# Python cache
+__pycache__/
+*.pyc
